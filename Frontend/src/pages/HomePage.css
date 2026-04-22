@@ -1,0 +1,123 @@
+/* Hero */
+.hero {
+  position: relative; overflow: hidden;
+  min-height: 92vh; display: flex; align-items: center;
+  padding: calc(var(--nav-h) + 60px) 0 80px;
+}
+.hero-bg { position: absolute; inset: 0; pointer-events: none; }
+.hero-blob {
+  position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.18;
+}
+.blob-1 {
+  width: 600px; height: 600px;
+  background: var(--accent); top: -200px; right: -100px;
+}
+.blob-2 {
+  width: 400px; height: 400px;
+  background: var(--teal); bottom: -100px; left: -80px;
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.25;
+}
+
+.hero-content { position: relative; z-index: 1; max-width: 680px; }
+.hero-eyebrow { margin-bottom: 20px; }
+.hero-title {
+  font-size: clamp(48px, 7vw, 88px); font-weight: 800;
+  line-height: 1.0; margin-bottom: 24px;
+  letter-spacing: -0.04em;
+}
+.hero-accent { color: var(--accent); }
+.hero-sub {
+  font-size: 18px; color: var(--muted); max-width: 480px;
+  line-height: 1.7; margin-bottom: 36px;
+}
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
+.hero-stats { display: flex; align-items: center; gap: 24px; }
+.stat { display: flex; flex-direction: column; gap: 2px; }
+.stat-num {
+  font-family: var(--font-head); font-size: 22px; font-weight: 800;
+  color: var(--text); letter-spacing: -0.03em;
+}
+.stat-label { font-size: 12px; color: var(--muted); }
+.stat-divider { width: 1px; height: 32px; background: var(--border); }
+
+/* Event cards */
+.section-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 24px;
+}
+.section-title { font-size: 26px; }
+
+.event-card-home {
+  display: flex; flex-direction: column; gap: 0;
+  padding: 0; cursor: pointer;
+}
+.event-card-top {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 16px 0;
+}
+.event-date-tag { font-size: 12px; color: var(--muted); }
+.event-card-body { padding: 12px 16px; flex: 1; }
+.event-card-title {
+  font-size: 15px; font-weight: 700; font-family: var(--font-head);
+  line-height: 1.2; margin-bottom: 8px; letter-spacing: -0.01em;
+}
+.event-venue { font-size: 12px; color: var(--muted); }
+.event-card-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 16px 14px;
+  border-top: 1px solid var(--border);
+}
+.event-price {
+  font-family: var(--font-head); font-weight: 700; font-size: 16px; color: var(--accent);
+}
+.spots { font-size: 12px; color: var(--muted); }
+.spots-low { color: #f59e0b; font-weight: 600; }
+
+/* AI callout */
+.ai-callout-section { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.ai-callout {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+}
+.ai-callout-left h2 { font-size: 36px; margin-bottom: 16px; }
+.ai-callout-left p { color: var(--muted); line-height: 1.7; max-width: 420px; }
+
+.ai-preview {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px;
+}
+.ai-preview-header {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
+}
+.ai-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--teal);
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { opacity: 1; } 50% { opacity: 0.4; }
+}
+.ai-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.ai-row:last-of-type { border-bottom: none; }
+.ai-label { font-size: 13px; color: var(--muted); }
+.ai-val { font-family: var(--font-head); font-weight: 700; font-size: 15px; }
+.ai-val.accent { color: var(--accent); }
+.ai-val.teal   { color: var(--teal); }
+.ai-val.blue   { color: var(--blue); }
+.ai-reasoning {
+  margin-top: 12px; font-size: 11px; color: var(--muted);
+  background: var(--bg2); border-radius: 6px; padding: 8px 10px;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .ai-callout { grid-template-columns: 1fr; gap: 32px; }
+}
