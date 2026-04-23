@@ -36,11 +36,18 @@ export const eventsAPI = {
 };
 
 export const bookingsAPI = {
-  create: (eventId, quantity) => request("POST", "/bookings", { eventId, quantity }),
+  create: (eventId, quantity, tierLabel, totalPrice) => request("POST", "/bookings", { eventId, quantity, tierLabel, totalPrice }),
   myBookings: () => request("GET", "/bookings/mine"),
   eventBookings: (eventId) => request("GET", `/bookings/event/${eventId}`),
 };
 
-export const pricingAPI = {
+export const pricingAPI = { 
   suggest: (eventData) => request("POST", "/pricing/suggest", eventData),
+};
+
+export const realEventsAPI = {
+  getByCity: (city, category) => {
+    const qs = new URLSearchParams({ city, category, t: Date.now() }).toString();
+    return request("GET", `/real-events?${qs}`);
+  },
 };
