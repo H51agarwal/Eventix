@@ -28,9 +28,11 @@
 .hero-content { position: relative; z-index: 1; max-width: 680px; }
 .hero-eyebrow { margin-bottom: 20px; }
 .hero-title {
-  font-size: clamp(48px, 7vw, 88px); font-weight: 800;
-  line-height: 1.0; margin-bottom: 24px;
+  font-size: clamp(36px, 5vw, 64px); font-weight: 800;
+  line-height: 1.2; margin-bottom: 32px;
   letter-spacing: -0.04em;
+  transform: scaleY(1.15);
+  transform-origin: left top;
 }
 .hero-accent { color: var(--accent); }
 .hero-sub {
@@ -43,6 +45,9 @@
 .stat-num {
   font-family: var(--font-head); font-size: 22px; font-weight: 800;
   color: var(--text); letter-spacing: -0.03em;
+  transform: scaleY(1.2);
+  transform-origin: left top;
+  display: inline-block;
 }
 .stat-label { font-size: 12px; color: var(--muted); }
 .stat-divider { width: 1px; height: 32px; background: var(--border); }
