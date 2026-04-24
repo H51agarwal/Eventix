@@ -1,9 +1,11 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
 import "./Navbar.css";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
+  const { theme, toggle } = useTheme();
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -41,6 +43,9 @@ export default function Navbar() {
                 <span className="user-name">{user.name}</span>
                 <span className={`role-dot role-${user.role}`} title={user.role} />
               </div>
+              <button className="theme-toggle" onClick={toggle} title="Toggle theme">
+                {theme === "dark" ? "☀️" : "🌙"}
+              </button>
               <button className="btn btn-ghost btn-sm" onClick={handleLogout}>Sign out</button>
             </div>
           ) : (

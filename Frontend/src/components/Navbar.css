@@ -47,3 +47,39 @@
 .role-dot.role-admin    { background: var(--accent); }
 .role-dot.role-organizer{ background: var(--teal); }
 .role-dot.role-attendee { background: var(--blue); }
+
+.theme-toggle {
+  width: 36px; height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  margin-right: 8px;
+}
+.theme-toggle:hover {
+  border-color: var(--text);
+  background: var(--bg2);
+}
+
+[data-theme="light"] .navbar {
+  background: rgba(245,245,240,0.9);
+  border-bottom-color: var(--border);
+}
+[data-theme="light"] .nav-link {
+  color: var(--muted);
+}
+[data-theme="light"] .nav-link:hover,
+[data-theme="light"] .nav-link.active {
+  color: var(--text);
+  background: var(--bg3);
+}
+[data-theme="light"] .user-chip {
+  background: var(--bg3);
+  border-color: var(--border);
+}
+[data-theme="light"] .logo-text {
+  color: var(--text);
+}

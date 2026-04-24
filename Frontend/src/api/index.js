@@ -51,3 +51,8 @@ export const realEventsAPI = {
     return request("GET", `/real-events?${qs}`);
   },
 };
+
+export const paymentAPI = {
+  createOrder: (data) => request("POST", "/payments/create-order", data),
+  verify: (data) => request("POST", "/payments/verify", data),
+};

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { eventsAPI, bookingsAPI } from "../api/index.js";
+import { eventsAPI, bookingsAPI, paymentAPI } from "../api/index.js";
 import "./EventDetailPage.css";
 
 function fmtDate(d) {
@@ -63,19 +63,64 @@ export default function EventDetailPage() {
   const pct = Math.round((totalBooked / event.capacity) * 100);
 
   async function handleBook() {
-    if (!user) { navigate("/login"); return; }
-    if (!tier) return;
-    setBookingLoading(true); setError("");
-    try {
-      const data = await bookingsAPI.create(event.id, quantity, tier.label, total);
-      setBooking(data);
-      setBooked(true);
-    } catch (err) {
-      setError(err.message || "Booking failed");
-    } finally {
-      setBookingLoading(false);
-    }
+  if (!user) { navigate("/login"); return; }
+  if (!tier) return;
+  setBookingLoading(true); setError("");
+  try {
+    // Step 1: Create Razorpay order
+    const order = await paymentAPI.createOrder({
+      amount: total,
+      eventId: event.id,
+      quantity,
+      tierLabel: tier.label,
+    });
+
+    // Step 2: Open Razorpay checkout
+    const options = {
+      key: order.keyId,
+      amount: order.amount,
+      currency: order.currency,
+      name: "Eventix",
+      description: `${quantity} ticket(s) for ${event.title}`,
+      order_id: order.orderId,
+      handler: async function (response) {
+        try {
+          // Step 3: Verify payment and create booking
+          await paymentAPI.verify({
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+            eventId: event.id,
+            quantity,
+            tierLabel: tier.label,
+            totalPrice: total,
+          });
+          setBooked(true);
+        } catch (err) {
+          setError("Payment verification failed. Contact support.");
+        }
+      },
+      prefill: {
+        name: user.name,
+        email: user.email,
+      },
+      theme: { color: "#ff6b35" },
+      modal: {
+        ondismiss: function () {
+          setBookingLoading(false);
+          setError("Payment cancelled.");
+        },
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  } catch (err) {
+    setError(err.message || "Payment failed");
+  } finally {
+    setBookingLoading(false);
   }
+}
 
   return (
     <div className="page">
