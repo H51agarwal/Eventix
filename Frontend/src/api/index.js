@@ -33,6 +33,7 @@ export const eventsAPI = {
   update: (id, data) => request("PUT", `/events/${id}`, data),
   delete: (id) => request("DELETE", `/events/${id}`),
   myEvents: () => request("GET", "/events/mine"),
+  cancel: (id) => request("PUT", `/events/${id}/cancel`),
 };
 
 export const bookingsAPI = {

@@ -47,3 +47,11 @@
   .table-row span:nth-child(5),
   .table-row span:nth-child(6) { display: none; }
 }
+
+@media (max-width: 768px) {
+  .dash-title-row { flex-direction: column; gap: 16px; }
+  .dash-title-row .btn { width: 100%; text-align: center; justify-content: center; }
+  .events-table { overflow-x: auto; }
+  .table-header { min-width: 600px; }
+  .table-row { min-width: 600px; }
+}

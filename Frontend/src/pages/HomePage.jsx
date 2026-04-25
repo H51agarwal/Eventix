@@ -1,19 +1,33 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { eventsAPI } from "../api/index.js";
 import "./HomePage.css";
-
-const MOCK_FEATURED = [
-  { id: 1, title: "Design Systems Summit", category: "Tech", date: "May 12, 2025", venue: "Online", price: 1200, spotsLeft: 48, total: 200 },
-  { id: 2, title: "Mumbai Jazz Collective", category: "Music", date: "May 18, 2025", venue: "NCPA, Mumbai", price: 800, spotsLeft: 12, total: 150 },
-  { id: 3, title: "Startup Pitch Night", category: "Business", date: "Jun 3, 2025", venue: "91springboard, Delhi", price: 500, spotsLeft: 63, total: 80 },
-  { id: 4, title: "AI & Society Conference", category: "Tech", date: "Jun 14, 2025", venue: "Bengaluru", price: 2000, spotsLeft: 200, total: 500 },
-];
 
 const CATEGORY_COLORS = {
   Tech: "badge-blue", Music: "badge-accent", Business: "badge-teal",
   Art: "badge-muted", Workshop: "badge-success",
 };
 
+function fmtDate(d) {
+  if (!d) return "";
+  return new Date(d).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+}
+
 export default function HomePage() {
+  const [featured, setFeatured] = useState([]);
+
+  useEffect(() => {
+    async function fetchFeatured() {
+      try {
+        const data = await eventsAPI.getAll();
+        setFeatured(data.slice(0, 4)); // Show only first 4
+      } catch (err) {
+        console.error("Failed to fetch events:", err);
+      }
+    }
+    fetchFeatured();
+  }, []);
+
   return (
     <div className="page">
       {/* Hero */}
@@ -49,33 +63,48 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured events */}
+      {/* Featured events from DB */}
       <section className="section">
         <div className="container">
           <div className="section-header">
-            <h2 className="section-title">Upcoming events</h2>
+            <h2 className="section-title">Upcoming events on Eventix</h2>
             <Link to="/events" className="btn btn-ghost btn-sm">View all →</Link>
           </div>
-          <div className="grid-4">
-            {MOCK_FEATURED.map(e => (
-              <Link to={`/events/${e.id}`} key={e.id} className="card event-card-home">
-                <div className="event-card-top">
-                  <span className={`badge ${CATEGORY_COLORS[e.category] || "badge-muted"}`}>{e.category}</span>
-                  <span className="event-date-tag">{e.date}</span>
-                </div>
-                <div className="event-card-body">
-                  <h3 className="event-card-title">{e.title}</h3>
-                  <p className="event-venue">📍 {e.venue}</p>
-                </div>
-                <div className="event-card-footer">
-                  <span className="event-price">₹{e.price.toLocaleString()}</span>
-                  <span className={`spots ${e.spotsLeft < 20 ? "spots-low" : ""}`}>
-                    {e.spotsLeft} left
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
+          {featured.length === 0 ? (
+            <div style={{ textAlign: "center", padding: "40px 0", color: "var(--muted)" }}>
+              <p style={{ marginBottom: 16 }}>No events yet. Be the first to create one!</p>
+              <Link to="/register?role=organizer" className="btn btn-primary btn-sm">Create an event</Link>
+            </div>
+          ) : (
+            <div className="grid-4">
+              {featured.map(e => {
+                const minPrice = e.pricingTiers?.length
+                  ? Math.min(...e.pricingTiers.map(t => t.price))
+                  : 0;
+                const spotsLeft = e.capacity - (e._count?.bookings || 0);
+                return (
+                  <Link to={`/events/${e.id}`} key={e.id} className="card event-card-home">
+                    <div className="event-card-top">
+                      <span className={`badge ${CATEGORY_COLORS[e.category] || "badge-muted"}`}>{e.category}</span>
+                      <span className="event-date-tag">{fmtDate(e.date)}</span>
+                    </div>
+                    <div className="event-card-body">
+                      <h3 className="event-card-title">{e.title}</h3>
+                      <p className="event-venue">📍 {e.venue}</p>
+                    </div>
+                    <div className="event-card-footer">
+                      <span className="event-price">
+                        {minPrice === 0 ? "Free" : `₹${minPrice.toLocaleString()}`}
+                      </span>
+                      <span className={`spots ${spotsLeft < 20 ? "spots-low" : ""}`}>
+                        {spotsLeft} left
+                      </span>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 
@@ -98,7 +127,8 @@ export default function HomePage() {
             <div className="ai-callout-right">
               <div className="ai-preview">
                 <div className="ai-preview-header">
-                  <span className="ai-dot" /><span style={{ color: "var(--muted)", fontSize: 13 }}>AI Pricing Suggestion</span>
+                  <span className="ai-dot" />
+                  <span style={{ color: "var(--muted)", fontSize: 13 }}>AI Pricing Suggestion</span>
                 </div>
                 <div className="ai-row"><span className="ai-label">Base price</span><span className="ai-val accent">₹ 1,200</span></div>
                 <div className="ai-row"><span className="ai-label">Early-bird (14+ days)</span><span className="ai-val teal">₹ 960</span></div>

@@ -71,3 +71,14 @@
 .booking-success h3 { font-size: 20px; margin-bottom: 8px; }
 .booking-success p { color: var(--muted); font-size: 14px; }
 .success-total { color: var(--success) !important; font-weight: 600; margin-top: 6px; }
+
+@media (max-width: 900px) {
+  .ed-layout { grid-template-columns: 1fr; }
+  .booking-panel { position: static; }
+  .ed-title { font-size: clamp(24px, 5vw, 40px); }
+  .ed-meta-row { flex-direction: column; gap: 8px; }
+}
+@media (max-width: 768px) {
+  .ed-hero { padding: calc(var(--nav-h) + 20px) 0 24px; }
+  .tiers-list { gap: 8px; }
+}
