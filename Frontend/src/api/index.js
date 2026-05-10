@@ -57,3 +57,8 @@ export const paymentAPI = {
   createOrder: (data) => request("POST", "/payments/create-order", data),
   verify: (data) => request("POST", "/payments/verify", data),
 };
+
+export const refundAPI = {
+  preview: (bookingId) => request("GET", `/refunds/preview/${bookingId}`),
+  cancel: (bookingId) => request("POST", `/refunds/cancel/${bookingId}`),
+};

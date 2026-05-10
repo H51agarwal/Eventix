@@ -32,6 +32,9 @@ export default function Navbar() {
             {user && (
               <Link to="/bookings" className={pathname === "/bookings" ? "nav-link active" : "nav-link"}>My Tickets</Link>
             )}
+            {user?.role === "admin" && (
+              <Link to="/admin" className={pathname.startsWith("/admin") ? "nav-link active" : "nav-link"}>Admin</Link>
+            )}
           </div>
 
           {/* Desktop actions */}
@@ -70,6 +73,9 @@ export default function Navbar() {
         )}
         {user && (
           <Link to="/bookings" className={pathname === "/bookings" ? "mobile-nav-link active" : "mobile-nav-link"} onClick={closeMenu}>My Tickets</Link>
+        )}
+        {user?.role === "admin" && (
+          <Link to="/admin" className={pathname.startsWith("/admin") ? "mobile-nav-link active" : "mobile-nav-link"} onClick={closeMenu}>Admin</Link>
         )}
         <hr className="mobile-divider" />
         <div className="mobile-actions">

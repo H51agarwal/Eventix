@@ -67,7 +67,7 @@ export default function CreateEventPage() {
       </div>
 
       <div className="section-sm">
-        <div className="container" style={{ display: "grid", gridTemplateColumns: "1fr 360px", gap: 40, alignItems: "start" }}>
+        <div className="container" style={{ display: "grid", gridTemplateColumns: "var(--create-cols, 1fr 360px)", gap: 40, alignItems: "start" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {error && <div className="msg-error">{error}</div>}
             <div className="field">

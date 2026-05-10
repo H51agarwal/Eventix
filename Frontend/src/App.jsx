@@ -12,6 +12,7 @@ import OrganizerDashboard from "./pages/OrganizerDashboard";
 import CreateEventPage from "./pages/CreateEventPage";
 import BookingHistoryPage from "./pages/BookingHistoryPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import AdminPanel from './pages/AdminPanel';
 
 function ProtectedRoute({ children, roles }) {
   const { user, loading } = useAuth();
@@ -58,9 +59,17 @@ export default function App() {
               }
             />
             <Route path="*" element={<NotFoundPage />} />
+            <Route
+              path='/admin'
+              element={
+                user?.role === 'admin'
+                  ? <AdminPanel />
+                  : <Navigate to="/" replace />
+              }
+            />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
     </ThemeProvider>
   );
-}
+} 
