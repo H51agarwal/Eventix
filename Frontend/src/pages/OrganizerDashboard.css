@@ -55,3 +55,77 @@
   .table-header { min-width: 600px; }
   .table-row { min-width: 600px; }
 }
+
+.od-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.od-modal {
+  background: var(--card, #fff);
+  border-radius: 14px;
+  padding: 2rem;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+.od-modal-msg {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text, #111);
+  margin: 0 0 0.5rem;
+}
+
+.od-modal-sub {
+  font-size: 0.875rem;
+  color: var(--muted, #888);
+  margin: 0 0 1.5rem;
+  line-height: 1.6;
+}
+
+.od-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.od-toast {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  z-index: 1000;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  animation: od-slide-in 0.2s ease;
+}
+
+.od-toast--success { background: #10b981; color: #fff; }
+.od-toast--error   { background: #ef4444; color: #fff; }
+
+.od-toast-close {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 0.8rem;
+  opacity: 0.8;
+  padding: 0;
+}
+
+@keyframes od-slide-in {
+  from { transform: translateY(12px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}

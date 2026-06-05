@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
+import EditEventPage from "./pages/EditEventPage";
 
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
@@ -12,7 +13,7 @@ import OrganizerDashboard from "./pages/OrganizerDashboard";
 import CreateEventPage from "./pages/CreateEventPage";
 import BookingHistoryPage from "./pages/BookingHistoryPage";
 import NotFoundPage from "./pages/NotFoundPage";
-import AdminPanel from './pages/AdminPanel';
+import AdminPanel from "./pages/AdminPanel";
 
 function ProtectedRoute({ children, roles }) {
   const { user, loading } = useAuth();
@@ -58,18 +59,26 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="*" element={<NotFoundPage />} />
             <Route
-              path='/admin'
+              path="/dashboard/edit/:id"
               element={
-                user?.role === 'admin'
-                  ? <AdminPanel />
-                  : <Navigate to="/" replace />
+                <ProtectedRoute roles={["organizer", "admin"]}>
+                  <EditEventPage />
+                </ProtectedRoute>
               }
             />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute roles={["admin"]}>
+                  <AdminPanel />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
     </ThemeProvider>
   );
-} 
+}

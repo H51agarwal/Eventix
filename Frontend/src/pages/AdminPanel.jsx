@@ -1,5 +1,5 @@
-import { useState, useEffect, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 import "./AdminPanel.css";
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
@@ -19,7 +19,6 @@ const apiFetch = async (path, options = {}) => {
   return data;
 };
 
-// ── Reusable stat card ──────────────────────────────────────────────────────
 const StatCard = ({ label, value, sub, accent }) => (
   <div className={`ap-stat-card ${accent ? "ap-stat-card--accent" : ""}`}>
     <span className="ap-stat-label">{label}</span>
@@ -28,12 +27,10 @@ const StatCard = ({ label, value, sub, accent }) => (
   </div>
 );
 
-// ── Status badge ────────────────────────────────────────────────────────────
 const Badge = ({ text, type }) => (
   <span className={`ap-badge ap-badge--${type}`}>{text}</span>
 );
 
-// ── Confirm modal ───────────────────────────────────────────────────────────
 const ConfirmModal = ({ message, onConfirm, onCancel, danger }) => (
   <div className="ap-modal-overlay">
     <div className="ap-modal">
@@ -53,7 +50,6 @@ const ConfirmModal = ({ message, onConfirm, onCancel, danger }) => (
   </div>
 );
 
-// ── Toast notification ──────────────────────────────────────────────────────
 const Toast = ({ msg, type, onClose }) => {
   useEffect(() => {
     const t = setTimeout(onClose, 3000);
@@ -67,9 +63,6 @@ const Toast = ({ msg, type, onClose }) => {
   );
 };
 
-// ════════════════════════════════════════════════════════════════════════════
-// TAB 1 — Overview
-// ════════════════════════════════════════════════════════════════════════════
 const OverviewTab = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -116,7 +109,6 @@ const OverviewTab = () => {
       </div>
 
       <div className="ap-two-col">
-        {/* Events by category */}
         <div className="ap-card">
           <h3 className="ap-card-title">Events by category</h3>
           <div className="ap-bar-list">
@@ -136,7 +128,6 @@ const OverviewTab = () => {
           </div>
         </div>
 
-        {/* Events by city */}
         <div className="ap-card">
           <h3 className="ap-card-title">Events by city</h3>
           <div className="ap-bar-list">
@@ -160,7 +151,6 @@ const OverviewTab = () => {
         </div>
       </div>
 
-      {/* Top organizers */}
       <div className="ap-card">
         <h3 className="ap-card-title">Top organizers by revenue</h3>
         <table className="ap-table">
@@ -187,7 +177,6 @@ const OverviewTab = () => {
         </table>
       </div>
 
-      {/* Recent bookings */}
       <div className="ap-card">
         <h3 className="ap-card-title">Recent bookings</h3>
         <table className="ap-table">
@@ -217,9 +206,6 @@ const OverviewTab = () => {
   );
 };
 
-// ════════════════════════════════════════════════════════════════════════════
-// TAB 2 — Users
-// ════════════════════════════════════════════════════════════════════════════
 const UsersTab = ({ showToast }) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -373,9 +359,6 @@ const UsersTab = ({ showToast }) => {
   );
 };
 
-// ════════════════════════════════════════════════════════════════════════════
-// TAB 3 — Events
-// ════════════════════════════════════════════════════════════════════════════
 const EventsTab = ({ showToast }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -527,9 +510,6 @@ const EventsTab = ({ showToast }) => {
   );
 };
 
-// ════════════════════════════════════════════════════════════════════════════
-// TAB 4 — Organizers
-// ════════════════════════════════════════════════════════════════════════════
 const OrganizersTab = ({ showToast }) => {
   const [organizers, setOrganizers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -621,9 +601,6 @@ const OrganizersTab = ({ showToast }) => {
   );
 };
 
-// ════════════════════════════════════════════════════════════════════════════
-// MAIN AdminPanel component
-// ════════════════════════════════════════════════════════════════════════════
 const TABS = [
   { id: "overview", label: "Overview" },
   { id: "users", label: "Users" },
@@ -632,7 +609,7 @@ const TABS = [
 ];
 
 export default function AdminPanel() {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("overview");
   const [toast, setToast] = useState(null);
 
