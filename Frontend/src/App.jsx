@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
-import EditEventPage from "./pages/EditEventPage";
+import EditEventPage from "./pages/EditEventsPage";
 
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
