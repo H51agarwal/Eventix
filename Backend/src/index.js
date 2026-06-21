@@ -15,7 +15,13 @@ import { startEventScheduler } from './services/eventScheduler.js';
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(cors({ 
+  origin: [
+    'http://localhost:5173', 
+    "https://eventix.vercel.app",
+  ],
+  credentials: true,
+}));
 app.use(express.json());
 
 // Routes
@@ -28,7 +34,6 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/refunds', refundRoutes);
 app.use('/api/admin', adminRoutes);
 
-// Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Eventix API is running' });
 });
