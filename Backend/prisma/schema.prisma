@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String   @id @default(uuid())
+  name              String
+  email             String   @unique
+  password          String
+  role              Role     @default(attendee)
+  banned            Boolean  @default(false)
+  phone             String?
+  notifyPreference  String   @default("email")
+  createdAt         DateTime @default(now())
+
+  events   Event[]
+  bookings Booking[]
+}
+
+model Event {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  date        DateTime
+  time        String
+  venue       String
+  type        EventType @default(offline)
+  category    String
+  capacity    Int
+  status      EventStatus @default(active)
+  createdAt   DateTime @default(now())
+
+  organizerId String
+  organizer   User   @relation(fields: [organizerId], references: [id])
+
+  pricingTiers PricingTier[]
+  bookings     Booking[]
+}
+
+model PricingTier {
+  id      String  @id @default(uuid())
+  label   String
+  price   Float
+  desc    String?
+
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+model Booking {
+  id        String        @id @default(uuid())
+  quantity  Int
+  totalPrice Float
+  tierLabel String
+  status    BookingStatus @default(confirmed)
+  paymentID String?
+  createdAt DateTime      @default(now())
+
+  userId  String
+  user    User  @relation(fields: [userId], references: [id])
+
+  eventId String
+  event   Event @relation(fields: [eventId], references: [id])
+}
+
+enum Role {
+  admin
+  organizer
+  attendee
+}
+
+enum EventType {
+  online
+  offline
+}
+
+enum EventStatus {
+  active
+  cancelled
+  past
+}
+
+enum BookingStatus {
+  confirmed
+  cancelled
+  attended
+}
